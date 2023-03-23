@@ -1,5 +1,6 @@
 import * as workerTimers from 'worker-timers'
 import { Countdown } from './countdown.js'
+import { events } from './events.js'
 
 export class Timer {
   private interval: number | null
@@ -12,6 +13,7 @@ export class Timer {
 
   start(): void {
     this.countdown.reset()
+    events.emit('overlay_set_time', this.countdown.time)
     this.interval = workerTimers.setInterval(() => {
       this.countdown.tick()
     }, 1000)

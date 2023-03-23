@@ -1,23 +1,44 @@
+import { Clicker } from './clicker.js'
+import { events } from './events.js'
 import { Overlay } from './overlay.js'
 import { Timer } from './timer.js'
-import { events } from './events.js'
 import './styles.scss'
 
 export class App {
   private overlay: Overlay
   private timer: Timer
+  private clicker: Clicker
 
   constructor() {
     this.overlay = new Overlay()
-    this.timer = new Timer()
     this.overlay.mount()
 
-    events.on('timer_reset', () => this.timer.reset())
-    events.on('timer_start', () => this.overlay.timerStarted())
-    events.on('timer_end', () => this.overlay.timerEnded())
-    events.on('overlay_set_time', (currentTime) =>
+    this.clicker = new Clicker()
+    this.clicker.mount()
+
+    this.timer = new Timer()
+
+    events.on('timer_start', () => {
+      this.timer.start()
+      this.overlay.timerStarted()
+    })
+
+    events.on('timer_end', () => {
+      this.timer.stop()
+      this.overlay.timerEnded()
+      this.clicker.retryClick()
+    })
+
+    events.on('timer_reset', () => {
+      this.timer.reset()
+      this.overlay.timerStarted()
+      this.clicker.unmount()
+      this.clicker.mount()
+    })
+
+    events.on('overlay_set_time', (currentTime) => {
       this.overlay.setTime(currentTime)
-    )
+    })
   }
 }
 

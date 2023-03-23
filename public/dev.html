@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fb-userscript</title>
+  <style>
+    button[aria-disabled="true"] {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    const button = document.createElement('button')
+    button.setAttribute('type', 'button')
+    button.setAttribute('role', 'button')
+    button.setAttribute('aria-disabled', 'true')
+    button.setAttribute('aria-label', 'Submit')
+    button.addEventListener('click', () => button.remove())
+    button.innerHTML = `
+      <div>
+        <div>
+          <i alt="" data-visualcompletion="css-img" class="img"></i>
+          <div>Submit</div>
+        </div>
+        </div>
+      <div aria-hidden="true"></div>
+    `
+
+    setTimeout(() => {
+      document.body.appendChild(button)
+    }, 1000)
+
+    setTimeout(() => {
+      button.setAttribute('aria-disabled', 'false')
+    }, 3000)
+  </script>
+</body>
+
+</html>

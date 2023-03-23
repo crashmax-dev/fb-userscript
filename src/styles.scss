@@ -1,9 +1,12 @@
 .overlay {
-  position: fixed;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
+
+  &.moved {
+    position: fixed;
+  }
 
   .modal {
     background-color: #1f1f23;
@@ -28,5 +31,9 @@
 }
 
 .timer-ended {
-  background-color: #009688 !important;
+  background-color: #e91e63 !important;
+}
+
+.timer-idle {
+  background-color: #03a9f4 !important;
 }
