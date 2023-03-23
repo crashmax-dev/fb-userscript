@@ -38,6 +38,10 @@
     setTimeout(() => {
       button.setAttribute('aria-disabled', 'false')
     }, 3000)
+
+    setTimeout(() => {
+      document.body.appendChild(button.cloneNode(true))
+    }, 5000)
   </script>
 </body>
 

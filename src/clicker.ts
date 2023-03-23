@@ -1,14 +1,28 @@
 import { observeElement } from '@zero-dependency/dom'
-import * as workerTimers from 'worker-timers'
 import { events } from './events.js'
 
 export class Clicker {
-  private observer: MutationObserver | null
-  private interval: number | null
-  private submitButton: HTMLElement | null
+  private submitButtonObserver: MutationObserver | null
+
+  private addButtonObserver(button: HTMLElement): void {
+    this.submitButtonObserver = observeElement(
+      button,
+      (mutation) => {
+        const currentButton = mutation.target as HTMLElement
+        const isDisabled = currentButton.ariaDisabled === 'true'
+        if (isDisabled) return
+        currentButton.click()
+        events.emit('timer_end')
+        this.unmount()
+      },
+      { attributes: true }
+    )
+  }
 
   mount(): void {
-    this.observer = observeElement(document.body, (_, observer) => {
+    observeElement(document.body, (_, observer) => {
+      if (this.submitButtonObserver) return
+
       const xpathResult = document.evaluate(
         "//div[contains(text(), 'Submit')]",
         document,
@@ -20,35 +34,18 @@ export class Clicker {
       const node = xpathResult.iterateNext()
       if (!node) return
 
-      const submitButton = node.parentNode?.parentNode?.parentElement
-      if (submitButton && submitButton.ariaLabel === 'Submit') {
-        this.submitButton = submitButton
-        const isDisabled = Boolean(submitButton.ariaDisabled)
-        if (isDisabled) {
-          events.emit('timer_start')
-        }
-        observer.disconnect()
+      const button = node.parentNode?.parentNode?.parentElement
+      if (button && button.ariaLabel === 'Submit') {
+        this.addButtonObserver(button)
+        events.emit('timer_start')
       }
     })
   }
 
   unmount(): void {
-    if (this.interval) {
-      workerTimers.clearInterval(this.interval)
-      this.interval = null
+    if (this.submitButtonObserver) {
+      this.submitButtonObserver.disconnect()
+      this.submitButtonObserver = null
     }
-    this.submitButton = null
-
-    if (this.observer) {
-      this.observer.disconnect()
-      this.observer = null
-    }
-  }
-
-  retryClick(): void {
-    this.interval = workerTimers.setInterval(() => {
-      if (!this.submitButton) return
-      this.submitButton.click()
-    }, 100)
   }
 }

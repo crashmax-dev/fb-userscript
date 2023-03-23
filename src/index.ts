@@ -19,17 +19,19 @@ export class App {
     this.timer = new Timer()
 
     events.on('timer_start', () => {
+      console.log('timer_start')
       this.timer.start()
       this.overlay.timerStarted()
     })
 
     events.on('timer_end', () => {
+      console.log('timer_end')
       this.timer.stop()
       this.overlay.timerEnded()
-      this.clicker.retryClick()
     })
 
     events.on('timer_reset', () => {
+      console.log('timer_reset')
       this.timer.reset()
       this.overlay.timerStarted()
       this.clicker.unmount()
