@@ -1,7 +1,7 @@
 {
-  "name": "vite-userscript-template",
+  "name": "fb-userscript",
   "private": true,
-  "homepage": "https://crashmax-dev.github.io/vite-userscript-template/",
+  "homepage": "https://crashmax-dev.github.io/fb-userscript/",
   "version": "0.0.1",
   "type": "module",
   "license": "MIT",
