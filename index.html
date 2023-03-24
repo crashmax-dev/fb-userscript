@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fb-userscript</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .container h1 {
+      font-size: 2rem;
+      margin: 0;
+    }
+
+    .container p {
+      font-size: 1rem;
+      margin: 0;
+      padding-top: 1rem;
+    }
+
+    .container button {
+      padding: 0.5rem 1rem;
+      margin-top: 1rem;
+      border: none;
+      border-radius: 0.25rem;
+      background-color: #000;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>fb-userscript</h1>
+    <p>Template for creating Userscripts with Vite</p>
+    <button>Install</button>
+  </div>
+  <script>
+    const isDev = location.hostname === 'localhost'
+    const button = document.querySelector('button')
+    button.addEventListener('click', () => {
+      if (isDev) {
+        location.href = 'fb-userscript.proxy.user.js'
+      } else {
+        location.href = 'fb-userscript.user.js'
+      }
+    })
+
+    if (isDev) {
+      button.textContent = 'Install proxy Userscript for development mode'
+    }
+  </script>
+</body>
+
+</html>
