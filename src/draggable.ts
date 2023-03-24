@@ -9,13 +9,7 @@ export class Draggable {
   private store = new LocalStorage('overlay-position', { x: 0, y: 0 })
 
   mount(target: HTMLElement): void {
-    this.el = el(
-      'div',
-      {
-        className: 'overlay'
-      },
-      target
-    )
+    this.el = el('div', { className: 'overlay' }, target)
 
     this.interact = new Interact(target, {
       constrain: true,
