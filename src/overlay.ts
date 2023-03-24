@@ -5,26 +5,26 @@ import { events } from './events.js'
 
 export class Overlay {
   private el: HTMLElement
-  private modal: HTMLDivElement
+  private widget: HTMLDivElement
   private container: HTMLDivElement
   private time: HTMLTimeElement
   private interact: Interact
-  private store = new LocalStorage('modal-position', { x: 0, y: 0 })
+  private store = new LocalStorage('widget-position', { x: 0, y: 0 })
 
   mount(): void {
     this.time = el('time')
     this.container = el(
       'div',
       {
-        className: 'modal-container'
+        className: 'widget-container'
       },
       this.time
     )
 
-    this.modal = el(
+    this.widget = el(
       'div',
       {
-        className: 'modal',
+        className: 'widget',
         onmouseenter: () => {
           this.el.classList.add('moved')
         },
@@ -47,13 +47,13 @@ export class Overlay {
       {
         className: 'overlay'
       },
-      this.modal
+      this.widget
     )
 
-    this.interact = new Interact(this.modal, {
+    this.interact = new Interact(this.widget, {
       constrain: true,
       relativeTo: this.el,
-      handle: this.modal,
+      handle: this.widget,
       onMouseUp: (el) => {
         const { x, y } = el.getBoundingClientRect()
         this.store.write({ x, y })
@@ -72,15 +72,15 @@ export class Overlay {
 
   timerIndle(): void {
     this.setTime('IDLE')
-    this.modal.classList.add('timer-idle')
+    this.widget.classList.add('timer-idle')
   }
 
   timerEnded() {
-    this.modal.classList.add('timer-ended')
+    this.widget.classList.add('timer-ended')
   }
 
   timerStarted() {
-    this.modal.classList.remove('timer-idle')
-    this.modal.classList.remove('timer-ended')
+    this.widget.classList.remove('timer-idle')
+    this.widget.classList.remove('timer-ended')
   }
 }
