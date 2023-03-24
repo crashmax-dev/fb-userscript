@@ -14,7 +14,7 @@ export default defineConfig((config) => {
           homepage,
           match: [
             'http://localhost:3000/*',
-            'https://example.com',
+            'https://review.intern.facebook.com/*',
           ]
         },
         server: {
