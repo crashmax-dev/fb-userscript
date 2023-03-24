@@ -21,7 +21,11 @@ export class Draggable {
       constrain: true,
       relativeTo: this.el,
       handle: target,
+      onMouseDown: () => {
+        this.el.classList.add('grabbing')
+      },
       onMouseUp: (el) => {
+        this.el.classList.remove('grabbing')
         const { x, y } = el.getBoundingClientRect()
         this.store.write({ x, y })
       }
