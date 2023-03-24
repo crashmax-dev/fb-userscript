@@ -13,7 +13,7 @@ export default defineConfig((config) => {
           license,
           homepage,
           match: [
-            homepage,
+            homepage + '*',
             'http://localhost:3000/*',
             'https://review.intern.facebook.com/*',
           ]
