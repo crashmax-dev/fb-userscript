@@ -5,7 +5,7 @@ import { Timer } from './timer.js'
 import { Widget } from './widget.js'
 import './styles.scss'
 
-export class App {
+class App {
   private draggable: Draggable
   private widget: Widget
   private timer: Timer
