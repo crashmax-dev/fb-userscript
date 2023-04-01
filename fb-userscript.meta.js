@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        fb-userscript
-// @version     0.1.0
+// @version     0.2.0
 // @license     MIT
 // @homepage    https://crashmax-dev.github.io/fb-userscript/
 // @match       https://crashmax-dev.github.io/fb-userscript/*
