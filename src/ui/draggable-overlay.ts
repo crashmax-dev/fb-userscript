@@ -27,7 +27,7 @@ export class DraggableOverlay {
     })
 
     this.updatePosition()
-    document.body.appendChild(this.el)
+    document.body.prepend(this.el)
   }
 
   updatePosition(): void {
