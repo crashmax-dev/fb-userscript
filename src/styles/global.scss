@@ -17,9 +17,7 @@
     z-index: 999999;
     position: fixed !important;
     background-color: #1f1f23;
-    user-select: none;
-    touch-action: none;
-    width: 64px;
+    width: 70px;
     height: 32px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5), 0 0 4px rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -30,17 +28,25 @@
   }
 
   .widget-container {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-weight: lighter;
-    font-size: 20px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+      'Lucida Sans', Arial, sans-serif;
+    font-size: 24px;
     color: #fff;
   }
 }
 
-.timer-ended {
-  background-color: #e91e63 !important;
-}
+.timer {
+  display: flex;
+  flex-direction: row;
 
-.timer-idle {
-  background-color: #03a9f4 !important;
+  div {
+    display: block;
+    text-align: center;
+    caret-color: transparent;
+
+    &:focus {
+      outline: none;
+      color: tomato;
+    }
+  }
 }

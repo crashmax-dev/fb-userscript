@@ -1,52 +1,41 @@
-import { Clicker } from './clicker.js'
-import { Draggable } from './draggable.js'
-import { events } from './events.js'
-import { Timer } from './timer.js'
-import { Widget } from './widget.js'
-import './styles.scss'
+import { Countdown } from './features/countdown.js'
+import { events } from './libs/events.js'
+import { DraggableOverlay } from './ui/draggable-overlay.js'
+import { TimerInput } from './ui/timer-input.js'
+import { Widget } from './ui/widget.js'
+import './styles/global.scss'
 
 class App {
-  private draggable: Draggable
-  private widget: Widget
-  private timer: Timer
-  private clicker: Clicker
+  private readonly timer: TimerInput
+  private readonly draggable: DraggableOverlay
+  private readonly widget: Widget
+  private readonly countdown: Countdown
 
   constructor() {
-    this.draggable = new Draggable()
+    this.timer = new TimerInput()
+    this.draggable = new DraggableOverlay()
     this.widget = new Widget()
-    this.widget.mount(this.draggable)
+    this.countdown = new Countdown()
+  }
+
+  mount() {
+    this.timer.mount()
+    this.widget.mount(this.draggable, this.timer)
     this.draggable.mount(this.widget.el)
 
-    this.clicker = new Clicker()
-    this.clicker.mount()
-
-    this.timer = new Timer()
-
-    events.on('timer_start', () => {
-      console.log('timer_start')
-      this.timer.start()
-      this.widget.timerStarted()
+    events.on('timer_start', (time) => {
+      this.countdown.start(time)
     })
 
-    events.on('timer_end', () => {
-      console.log('timer_end')
-      this.timer.stop()
-      this.widget.timerEnded()
+    events.on('timer_stop', () => {
+      this.countdown.stop()
     })
 
-    events.on('timer_reset', () => {
-      console.log('timer_reset')
-      this.timer.reset()
-      this.widget.timerStarted()
-      this.clicker.unmount()
-      this.clicker.mount()
-    })
-
-    events.on('overlay_set_time', (currentTime) => {
-      this.widget.setTime(currentTime)
+    events.on('timer_tick', (time) => {
+      this.timer.updateInputValues(time)
     })
   }
 }
 
 const app = new App()
-console.log(app)
+app.mount()

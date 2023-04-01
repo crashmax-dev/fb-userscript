@@ -1,12 +1,11 @@
 import { el } from '@zero-dependency/dom'
 import { Interact } from '@zero-dependency/interact'
-import { LocalStorage } from '@zero-dependency/storage'
+import { store } from '../libs/storage.js'
 
-export class Draggable {
+export class DraggableOverlay {
   el: HTMLElement
 
   private interact: Interact
-  private store = new LocalStorage('overlay-position', { x: 0, y: 0 })
 
   mount(target: HTMLElement): void {
     this.el = el('div', { className: 'overlay' }, target)
@@ -18,15 +17,21 @@ export class Draggable {
       onMouseDown: () => {
         this.el.classList.add('grabbing')
       },
-      onMouseUp: (el) => {
+      onMouseUp: () => {
         this.el.classList.remove('grabbing')
+      },
+      onMouseMove: (el) => {
         const { x, y } = el.getBoundingClientRect()
-        this.store.write({ x, y })
+        store.write((prevValue) => ({ ...prevValue, position: { x, y } }))
       }
     })
 
-    const { x, y } = this.store.values
-    this.interact.changePosition(x, y)
+    this.updatePosition()
     document.body.appendChild(this.el)
+  }
+
+  updatePosition(): void {
+    const { x, y } = store.getByKey('position')
+    this.interact.changePosition(x, y)
   }
 }
